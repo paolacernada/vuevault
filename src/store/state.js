@@ -1,3 +1,5 @@
 export default {
-   searchedMovies: []
+   searchedMovies: [],
+   moviesByLetter: [],
+   moviesByCast: []
 }

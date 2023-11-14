@@ -1,6 +1,6 @@
 <template>
   <!-- Main container with a fixed width and centered -->
-  <div class="w-[800px] mx-auto">
+  <div class="max-w-[800px] mx-auto">
 
     <!-- Button to navigate back to the previous page -->
     <button @click="goBack" class="mb-4 text-lg font-semibold text-blue-600 hover:text-blue-800">
@@ -38,11 +38,11 @@
     <div class="my-8">
       <h2 class="text-2xl font-semibold mb-4 text-gray-700">Watch Providers</h2>
       <!-- Grid of watch providers (displayed if available) -->
-      <div v-if="watchProviders.length > 0" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div v-if="watchProviders.length > 0" style="margin: 15px; padding: 15px;" class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-black bg-opacity-5 shadow-sm">
         <div v-for="provider in watchProviders" :key="provider.provider_id" class="flex flex-col items-center">
           <!-- Provider name and logo -->
-          <p class="text-sm font-medium mb-2">{{ provider.provider_name }}</p>
-          <img :src="getImageUrl(provider.logo_path)" :alt="provider.provider_name" class="w-24 h-24 rounded-md object-contain border border-gray-300 shadow-sm">
+           <div class="flex"><img :src="getImageUrl(provider.logo_path)" :alt="provider.provider_name" class="w-24 h-24 rounded-md object-contain border border-gray-300 shadow-sm"></div>
+           <div><p class="text-sm font-medium text-center flex flex-col h-full p-1">{{ provider.provider_name }}</p></div>
         </div>
       </div>
       <!-- Message displayed if no watch providers are available -->
@@ -85,7 +85,6 @@ onMounted(async () => {
   }
 });
 
-// Utility functions for formatting data
 function getMoviePosterUrl(posterPath) {
   // Returns URL for movie poster or a placeholder if not available
   return posterPath ? 'https://image.tmdb.org/t/p/original' + posterPath : posterNotAvailable;

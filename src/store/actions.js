@@ -16,14 +16,68 @@ async function checkTrailerAvailability(movie) {
 export async function searchMovies({ commit }, keyword) {
     try {
         const response = await axiosClient.get(`search/movie?query=${keyword}`);
-        const movies = response.data.results;
+        let movies = response.data.results;
+
+        // Fetch releases for each movie and filter out 'NC-17' rated movies
+        const filteredMovies = [];
+        for (const movie of movies) {
+            const releasesResponse = await axiosClient.get(`movie/${movie.id}/releases`);
+            const releases = releasesResponse.data.countries;
+
+            // Find US certification
+            const usRelease = releases.find(release => release.iso_3166_1 === 'US');
+            if (usRelease && usRelease.certification !== 'NC-17') {
+                filteredMovies.push(movie);
+            }
+        }
 
         // Initialize trailer availability for each movie
-        const trailerChecks = movies.map((movie) => checkTrailerAvailability(movie));
+        const trailerChecks = filteredMovies.map((movie) => checkTrailerAvailability(movie));
         await Promise.all(trailerChecks);
 
-        commit("setSearchedMovies", movies);
+        commit("setSearchedMovies", filteredMovies);
     } catch (error) {
         console.error('Error searching movies:', error);
     }
+}
+
+export async function searchMoviesByLetter({ commit }, letter) {
+    try {
+        const response = await axiosClient.get(`search/movie?query=${letter}`);
+        let movies = response.data.results;
+
+        // Filter movies starting with the selected letter
+        movies = movies.filter(movie => movie.title && movie.title.toUpperCase().startsWith(letter.toUpperCase()));
+
+        // Fetch releases for each movie and filter out 'NC-17' rated movies
+        const filteredMovies = [];
+        for (const movie of movies) {
+            const releasesResponse = await axiosClient.get(`movie/${movie.id}/releases`);
+            const releases = releasesResponse.data.countries;
+
+            // Find US certification
+            const usRelease = releases.find(release => release.iso_3166_1 === 'US');
+            if (usRelease && usRelease.certification !== 'NC-17') {
+                filteredMovies.push(movie);
+            }
+        }
+
+        // Initialize trailer availability for each movie
+        const trailerChecks = filteredMovies.map(movie => checkTrailerAvailability(movie));
+        await Promise.all(trailerChecks);
+
+        // Sort movies alphabetically by title
+        filteredMovies.sort((a, b) => a.title.localeCompare(b.title));
+
+        commit("setMoviesByLetter", filteredMovies);
+    } catch (error) {
+        console.error('Error searching movies by letter:', error);
+    }
+}
+
+export function searchMoviesByCast({ commit }, cast) {
+    axiosClient.get(`search/person?query=${cast}`)
+        .then(({ data }) => {
+            commit("setMoviesByCast", data.movies)
+        })
 }
