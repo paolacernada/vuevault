@@ -18,8 +18,8 @@
 </template>
 
 <script setup>
-import { computed } from '@vue/reactivity';
-import { onMounted, watch } from 'vue';
+
+import { computed, onMounted, watch } from 'vue';
 import store from '../store';
 import { useRoute } from 'vue-router';
 import MovieCard from '../components/MovieCard.vue';
