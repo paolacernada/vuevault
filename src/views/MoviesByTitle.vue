@@ -1,6 +1,6 @@
 <template>
   <!-- Search input binds to the keyword data property and calls searchMovies on change -->
-  <MovieSearch @search="searchMovies" />
+  <MovieSearchBar @search="searchMovies" />
 
   <!-- Container for displaying movies -->
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 p-8">
@@ -15,7 +15,7 @@ import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import store from '../store';
 import MovieCard from '../components/MovieCard.vue';
-import MovieSearch from '../components/MovieSearch.vue';
+import MovieSearchBar from '../components/MovieSearchBar.vue';
 
 const route = useRoute();
 const keyword = ref('');
