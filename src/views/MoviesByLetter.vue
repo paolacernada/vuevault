@@ -17,7 +17,7 @@
 import { computed, onMounted, watch } from 'vue';
 import store from '../store';
 import { useRoute } from 'vue-router';
-import MovieCard from '../components/MovieCard.vue';
+import MovieCard from '../components/MovieCard.vue'; 
 import AlphabetNav from "../components/AlphabetNav.vue";
 
 const route = useRoute();

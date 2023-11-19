@@ -1,7 +1,7 @@
 import tmdb from "./api/tmdb";
 
 const axiosClient = tmdb.create({
-    baseURL: 'https://api.themoviedb.org/3',
+    baseURL: import.meta.env.VITE_API_BASE_URL,
   });
 
 export default axiosClient;
