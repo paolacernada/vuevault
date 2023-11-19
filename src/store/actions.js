@@ -75,9 +75,34 @@ export async function searchMoviesByLetter({ commit }, letter) {
     }
 }
 
-export function searchMoviesByCast({ commit }, cast) {
-    axiosClient.get(`search/person?query=${cast}`)
-        .then(({ data }) => {
-            commit("setMoviesByCast", data.movies)
-        })
+export async function searchMoviesByCast({ commit }, cast) {
+    try {
+        const response = await axiosClient.get(`search/person?query=${cast}`);
+        const persons = response.data.results;
+
+        // Take only the first person's results
+        let movies = persons.length > 0 ? persons[0].known_for : [];
+
+        // Fetch releases for each movie and filter out 'NC-17' rated movies
+        const filteredMovies = [];
+        for (const movie of movies) {
+            const releasesResponse = await axiosClient.get(`movie/${movie.id}/releases`);
+            const releases = releasesResponse.data.countries;
+
+            // Find US certification
+            const usRelease = releases.find(release => release.iso_3166_1 === 'US');
+            if (usRelease && usRelease.certification !== 'NC-17') {
+                filteredMovies.push(movie);
+            }
+        }
+
+        // Initialize trailer availability for each movie
+        const trailerChecks = filteredMovies.map(movie => checkTrailerAvailability(movie));
+        await Promise.all(trailerChecks);
+
+        commit("setMoviesByCast", filteredMovies);
+    } catch (error) {
+        console.error('Error searching movies by cast:', error);
+    }
 }
+

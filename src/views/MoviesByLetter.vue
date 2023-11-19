@@ -17,7 +17,7 @@
 import { computed, onMounted, watch } from 'vue';
 import store from '../store';
 import { useRoute } from 'vue-router';
-import MovieCard from '../components/MovieCard.vue'; 
+import MovieCard from '../components/MovieCard.vue';
 import AlphabetNav from "../components/AlphabetNav.vue";
 
 const route = useRoute();
@@ -25,9 +25,11 @@ const movies = computed(() => store.state.moviesByLetter)
 
 watch(route, () => {
     store.dispatch("searchMoviesByLetter", route.params.letter)
-})
+});
 
 onMounted(() => {
-    store.dispatch("searchMoviesByLetter", route.params.letter)
-})
+    if (route.params.letter) {
+        store.dispatch("searchMoviesByLetter", route.params.letter);
+    }
+});
 </script>

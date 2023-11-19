@@ -1,6 +1,6 @@
 <template>
   <!-- Search input binds to the keyword data property and calls searchMovies on change -->
-  <MovieSearchBar @search="searchMovies" />
+  <MovieSearchBar @search="searchMovies" placeholder="Search for movies"/>
 
   <!-- Container for displaying movies -->
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 p-8">
