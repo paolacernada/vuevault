@@ -73,15 +73,14 @@ import { useRoute, useRouter } from "vue-router";
 import axiosClient from "../axiosClient";
 import posterNotAvailable from '../assets/poster_not_available.png';
 
-// Using Vue Router to access route and router instances
+// Use Vue Router to access route and router instances
 const route = useRoute();
 const router = useRouter();
 
-// Reactive states for movie and watch providers
 const movie = ref({ genres: [] }); // Initialize genres as an empty array
 const watchProviders = ref([]);
 
-// Fetch movie details and watch providers on component mount
+// Fetch movie details and watch providers
 onMounted(async () => {
   // Fetch movie details
   axiosClient.get(`/movie/${route.params.id}`)
@@ -104,14 +103,14 @@ function getMoviePosterUrl(posterPath) {
 }
 
 function formatDate(date) {
-  // Formats date string to MM/DD/YYYY format
+  // Format date string to MM/DD/YYYY format
   if (!date) return '';
   const [year, month, day] = date.split('-');
   return `${month}/${day}/${year}`;
 }
 
 function formatRuntime(runtime) {
-  // Converts runtime in minutes to hours and minutes
+  // Convert runtime in minutes to hours and minutes
   if (!runtime) return 'Not Available';
   const hours = Math.floor(runtime / 60);
   const minutes = runtime % 60;
