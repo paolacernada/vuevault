@@ -31,9 +31,9 @@ function searchMovies(searchTerm) {
 
 onMounted(() => {
   // Initialize search if there's a keyword in the route params
-  keyword.value = route.params.title;
-  if (keyword.value) {
-    searchMovies();
+  if (route.params.title) {
+    keyword.value = route.params.title;
+    searchMovies(keyword.value);
   }
 })
 </script>

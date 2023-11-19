@@ -47,7 +47,7 @@ export async function searchMoviesByLetter({ commit }, letter) {
         let movies = response.data.results;
 
         // Filter movies starting with the selected letter
-        movies = movies.filter(movie => movie.title && movie.title.toUpperCase().startsWith(letter.toUpperCase()));
+        movies = movies.filter(movie => movie.title && movie.title.startsWith(letter));
 
         // Fetch releases for each movie and filter out 'NC-17' rated movies
         const filteredMovies = [];
