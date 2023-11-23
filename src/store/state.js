@@ -1,5 +1,8 @@
 export default {
    searchedMovies: [],
    moviesByLetter: [],
-   moviesByCast: []
+   moviesByCast: [],
+   lastSearchQuery: '',
+   searchPerformed: false,
+   isLoading: false
 }
