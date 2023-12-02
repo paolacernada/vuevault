@@ -26,6 +26,8 @@ const moviesNowPlaying = ref([]);
 const currentPage = ref(1);
 const totalPages = ref(0);
 
+const currentYear = new Date().getFullYear();
+
 onMounted(async () => {
     await fetchNowPlayingMovies();
 });
@@ -46,7 +48,10 @@ async function fetchNowPlayingMovies() {
 }
 
 async function processMovies(movies) {
-    return await Promise.all(movies.map(async (movie) => {
+    return await Promise.all(
+        movies
+        .filter(movie => new Date(movie.release_date).getFullYear() === currentYear)
+        .map(async (movie) => {
         return {
             ...movie,
             trailerAvailable: await checkTrailerAvailability(movie.id)
