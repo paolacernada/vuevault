@@ -2,7 +2,9 @@ export default {
    searchedMovies: [],
    moviesByLetter: [],
    moviesByCast: [],
-   lastSearchQuery: '',
+   lastSearchQueryByTitle: '',
+   lastSearchQueryByCast: '',
    searchPerformed: false,
-   isLoading: false
+   isLoadingByTitle: false,
+   isLoadingByCast: false,
 }

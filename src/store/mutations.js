@@ -1,18 +1,33 @@
 export function setSearchedMovies(state, movies) {
-    state.searchedMovies = movies
+    state.searchedMovies = movies;
 }
+
 export function setMoviesByLetter(state, movies) {
-    state.moviesByLetter = movies
+    state.moviesByLetter = movies;
 }
+
 export function setMoviesByCast(state, movies) {
-    state.moviesByCast = movies
+    state.moviesByCast = movies;
 }
-export function setLastSearchQuery(state, query) {
-    state.lastSearchQuery = query;
+
+// Separate mutations for setting last search query for title and cast
+export function setLastSearchQueryByTitle(state, query) {
+    state.lastSearchQueryByTitle = query;
 }
+
+export function setLastSearchQueryByCast(state, query) {
+    state.lastSearchQueryByCast = query;
+}
+
 export function setSearchPerformed(state, value) {
     state.searchPerformed = value;
 }
-export function setIsLoading(state, isLoading) {
-    state.isLoading = isLoading;
+
+// Separate mutations for setting isLoading for title and cast
+export function setIsLoadingByTitle(state, isLoading) {
+    state.isLoadingByTitle = isLoading;
+}
+
+export function setIsLoadingByCast(state, isLoading) {
+    state.isLoadingByCast = isLoading;
 }

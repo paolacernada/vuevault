@@ -9,9 +9,9 @@
   </div>
 
   <!-- Displays the message if no movies are found and a search has been performed -->
-  <div v-else-if="lastSearchQuery !== '' && !isLoading" class="text-center p-8">
+  <div v-else-if="lastSearchQueryByCast !== '' && !isLoadingByCast" class="text-center p-16">
     <p>Hmmm...</p>
-    <p>We couldn't find any matches for "{{ lastSearchQuery }}".</p>
+    <p>We couldn't find any matches for "{{ lastSearchQueryByCast }}".</p>
     <p>Double check your search for any typos or spelling errors - or try a different cast member name.</p>
   </div>
 </template>
@@ -25,23 +25,22 @@ import MovieSearchBar from '../components/MovieSearchBar.vue';
 
 const route = useRoute();
 const keyword = ref('');
-const searchPerformed = computed(() => store.state.searchPerformed);
 const cast = computed(() => store.state.moviesByCast);
-const lastSearchQuery = computed(() => store.state.lastSearchQuery);
-const isLoading = computed(() => store.state.isLoading);
+const lastSearchQueryByCast = computed(() => store.state.lastSearchQueryByCast);
+const isLoadingByCast = computed(() => store.state.isLoadingByCast);
 
 function searchMoviesByCast(searchTerm) {
-    if (searchTerm) {
-        store.dispatch('searchMoviesByCast', searchTerm);
-    } else {
-        store.dispatch('resetSearch'); // Resets the search state when input is cleared
-    }
+  if (searchTerm) {
+    store.dispatch('searchMoviesByCast', searchTerm);
+  } else {
+    store.dispatch('resetCastSearchState'); // Resets the search state when input is cleared
+  }
 }
 
 function handleInput(event) {
-    if (!event.target.value) {
-        store.dispatch('resetSearch'); // Resets the search state when input is cleared
-    }
+  if (!event.target.value) {
+    store.dispatch('resetCastSearchState'); // Resets the search state when input is cleared
+  }
 }
 
 onMounted(() => {

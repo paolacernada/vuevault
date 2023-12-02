@@ -14,6 +14,9 @@ async function checkTrailerAvailability(movie) {
 }
 
 export async function searchMovies({ commit }, keyword) {
+    commit('setIsLoadingByTitle', true);  // Start loading
+    commit('setLastSearchQueryByTitle', keyword);
+
     try {
         const response = await axiosClient.get(`search/movie?query=${keyword}`);
         let movies = response.data.results;
@@ -38,6 +41,8 @@ export async function searchMovies({ commit }, keyword) {
         commit("setSearchedMovies", filteredMovies);
     } catch (error) {
         console.error('Error searching movies:', error);
+    } finally {
+        commit('setIsLoadingByTitle', false);  // End loading
     }
 }
 
@@ -76,13 +81,11 @@ export async function searchMoviesByLetter({ commit }, letter) {
 }
 
 export async function searchMoviesByCast({ commit }, cast) {
-    commit("setIsLoading", true);
+    commit("setIsLoadingByCast", true);
+    commit("setLastSearchQueryByCast", cast); 
 
     try {
         commit("setSearchPerformed", true);
-
-        // Updates the lastSearchQuery state
-        commit("setLastSearchQuery", cast);
 
         const response = await axiosClient.get(`search/person?query=${cast}`);
         const persons = response.data.results;
@@ -116,13 +119,18 @@ export async function searchMoviesByCast({ commit }, cast) {
     } catch (error) {
         console.error('Error searching movies by cast:', error);
     } finally {
-        commit("setIsLoading", false);
+        commit("setIsLoadingByCast", false);
     }
 }
 
-export async function resetSearch({ commit }) {
-    commit("setSearchPerformed", false);
-    commit("setMoviesByCast", []);
-    commit("setLastSearchQuery", '');
+export async function resetCastSearchState({ commit }) {
+    commit('setMoviesByCast', []); // Clears the moviesByCast state
+    commit('setLastSearchQueryByCast', ''); // Resets the last search query for cast
+    commit('setIsLoadingByCast', false); // Ensures loading state is reset
 }
 
+export async function resetTitleSearchState({ commit }) {
+    commit('setSearchedMovies', []);
+    commit('setLastSearchQueryByTitle', '');
+    commit('setIsLoadingByTitle', false);
+}
