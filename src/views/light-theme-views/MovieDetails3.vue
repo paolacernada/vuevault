@@ -1,65 +1,64 @@
 <template>
   <!-- Main container with a fixed width and centered -->
-  <div class="max-w-4xl mx-auto p-4 bg-white shadow-lg rounded-lg mt-4 mb-4">
-
+  <div class="max-w-4xl mx-auto p-4 bg-gray-900 shadow-lg rounded-lg mt-4 mb-4 text-white">
+   
     <!-- Button to navigate back to the previous page -->
-    <button @click="goBack" class="mb-6 text-lg font-semibold text-blue-700 hover:text-blue-900">
-      ← Back to List
+    <button @click="goBack" class="mb-6 text-lg font-semibold text-blue-400 hover:text-blue-600">
+      Back
     </button>
 
     <!-- Movie title -->
-    <h1 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-8">
+    <h1 class="text-4xl md:text-5xl font-bold text-center mb-8">
       {{ movie.title }}
     </h1>
 
     <!-- Container for movie poster and movie details -->
-    <div class="flex flex-row items-start justify-center ml-20">
+    <div class="flex flex-col md:flex-row items-center justify-center gap-10">
       <div>
         <!-- Movie poster -->
         <img :src="getMoviePosterUrl(movie.poster_path)" :alt="movie.title"
-          class="rounded-lg shadow-md w-44 h-60 object-cover mx-auto mr-5" />
+        class="rounded-lg shadow-md w-44 h-60 object-cover mx-auto" />
       </div>
 
       <!-- Movie details: release date, genres, runtime -->
-      <div class="flex flex-col bg-gray-100 rounded-lg shadow p-4 space-y-5 w-2/5 max-w-sm md:max-w-lg mr-10">
+      <div class="bg-gray-800 rounded-lg shadow p-4 space-y-4 w-full md:w-2/5">
 
         <!-- Release Date -->
           <div class="ml-3 text-lg">
             <strong class="font-semibold">Release Date:</strong><br> {{ formatDate(movie.release_date) }}
-          </div>
+        </div>
 
           <!-- Genres (displayed if available) -->
           <div class="ml-3 text-lg">
             <strong class="font-semibold">Genres:</strong><br>
-            <span v-if="movie.genres && movie.genres.length > 0">
-              {{ movie.genres.map(genre => genre.name).join(', ') }}
-            </span>
-            <span v-else class="text-gray-600">No Genre Info Available</span>
-          </div>
+          <span v-if="movie.genres && movie.genres.length > 0">
+            {{ movie.genres.map(genre => genre.name).join(', ') }}
+          </span>
+          <span v-else>No Genre Info Available</span>
+        </div>
 
           <!-- Runtime -->
           <div class="ml-3 text-lg">
             <strong class="font-semibold">Runtime:</strong><br> {{ formatRuntime(movie.runtime) }}
-          </div>
-
+        </div>
       </div>
     </div>
 
     <!-- Watch Providers section -->
     <div class="mb-8">
-      <hr class="mt-10">
-      <h2 class="text-2xl text-center font-semibold mt-8 mb-4 text-gray-800">Where to Watch</h2>
+      <hr class="my-10 border-gray-700">
 
-      <div v-if="watchProviders.length > 0" class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div v-for="provider in watchProviders" :key="provider.provider_id"
-          class="flex flex-col items-center p-4 bg-gray-100 rounded-lg shadow">
-          <img :src="getImageUrl(provider.logo_path)" :alt="provider.provider_name"
-            class="w-24 h-24 rounded-md object-contain mb-2">
-          <p class="text-sm font-medium text-center">{{ provider.provider_name }}</p>
-        </div>
+      <h2 class="text-2xl text-center font-semibold mt-8 mb-4">Where to Watch</h2>
+    <div v-if="watchProviders.length > 0" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div v-for="provider in watchProviders" :key="provider.provider_id"
+           class="flex flex-col items-center p-4 bg-gray-800 rounded-lg shadow">
+        <img :src="getImageUrl(provider.logo_path)" :alt="provider.provider_name"
+             class="w-24 h-24 rounded-md object-contain mb-2">
+        <p class="text-sm">{{ provider.provider_name }}</p>
       </div>
+    </div>
       <!-- Message displayed if no watch providers are available -->
-      <div v-else class="text-center text-gray-900">
+      <div v-else class="text-center">
         No streaming services available.
       </div>
     </div>

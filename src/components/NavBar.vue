@@ -1,23 +1,24 @@
 <template>
-    <header class="bg-white shadow h-16 flex justify-between items-center">
-        <router-link :to="{ name: 'home' }" class="inline-flex items-center h-full px-5 hover:text-blue-500">
-            Home
+    <header class="bg-gray-800 h-16 flex justify-between items-center px-5 shadow-md">
+        <router-link :to="{ name: 'home' }" class="inline-flex items-center h-full">
+            <img src="../assets/VueVault_logo.png" alt="VueVault Logo" class="h-12 mr-2"> <!-- Replace with your logo path if needed -->
+            <span class="text-2xl text-white font-shrikhand">VueVault</span>
         </router-link>
-        <div class="flex-items-center gap-1">
+        <nav class="flex items-center gap-4">
             <router-link :to="{ name: 'byTitle' }"
-                class="inline-flex items-center px-2 rounded-xl h-full transition-colors hover:bg-blue-500 hover:text-white">
+                class="px-4 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-blue-600 hover:text-white transition-colors">
                 Search Movies
             </router-link>
 
             <router-link :to="{ name: 'byLetter' }"
-                class="inline-flex items-center px-2 rounded-xl h-full transition-colors hover:bg-blue-500 hover:text-white">
+                class="px-4 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-blue-600 hover:text-white transition-colors">
                 Featured Movies
             </router-link>
 
             <router-link :to="{ name: 'byCast' }"
-                class="inline-flex items-center px-2 rounded-xl h-full transition-colors hover:bg-blue-500 hover:text-white">
+                class="px-4 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-blue-600 hover:text-white transition-colors">
                 Movies By Cast
             </router-link>
-        </div>
+        </nav>
     </header>
 </template>

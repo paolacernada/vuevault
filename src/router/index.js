@@ -4,7 +4,6 @@ import Home from "../views/Home.vue"
 import MoviesByTitle from "../views/MoviesByTitle.vue"
 import MoviesByLetter from "../views/MoviesByLetter.vue"
 import MoviesByCast from "../views/MoviesByCast.vue"
-import MovieDetails from "../views/MovieDetails.vue"
 
 const routes = [
     {
@@ -31,11 +30,6 @@ const routes = [
                 name: "byCast",
                 component: MoviesByCast,
             },
-            {
-                path: "/movie/:id",
-                name: "movieDetails",
-                component: MovieDetails,
-            }
         ]
     },
 ];

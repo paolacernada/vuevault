@@ -1,12 +1,13 @@
 <template>
     <NavBar />
-    <main>
-        <div class="max-w-[1200px] mx-auto">
-            <router-view />
-        </div>
+    <main class="bg-gray-900 text-white min-h-screen">
+      <div class="container mx-auto px-5 py-8">
+        <router-view />
+      </div>
     </main>
-</template>
-
-<script setup>
-import NavBar from '../components/NavBar.vue'
-</script>
+  </template>
+  
+  <script setup>
+  import NavBar from '../components/NavBar.vue'
+  </script>
+  

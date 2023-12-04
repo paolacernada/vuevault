@@ -1,53 +1,79 @@
-
 <template>
   <MovieSearchBar @search="searchMoviesByCast" @input="handleInput" placeholder="Search by cast member name" />
 
-  <!-- Checks if there are movies to display -->
-
-  <div v-if="cast.length" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 p-8">
-    <MovieCard v-for="movie in cast" :key="movie.id" :movie="movie" />
+    <!-- Loading Spinner -->
+    <div v-if="isLoadingByCast" class="flex justify-center my-4">
+    <div class="loader"></div>
   </div>
 
-  <!-- Displays the message if no movies are found and a search has been performed -->
+  <div v-if="cast.length" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 p-8">
+    <MovieCard v-for="movie in cast" :key="movie.id" :movie="movie" @click="showMovieDetails(movie.id)" />
+  </div>
+
   <div v-else-if="lastSearchQueryByCast !== '' && !isLoadingByCast" class="text-center p-16">
     <p>Hmmm...</p>
     <p>We couldn't find any matches for "{{ lastSearchQueryByCast }}".</p>
     <p>Double check your search for any typos or spelling errors - or try a different cast member name.</p>
   </div>
+
+  <!-- Movie Details Modal -->
+  <MovieDetailsModal :movieId="selectedMovieId" :showModal="selectedMovieId !== null" @close="selectedMovieId = null" />
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import store from '../store';
 import MovieCard from '../components/MovieCard.vue';
 import MovieSearchBar from '../components/MovieSearchBar.vue';
+import MovieDetailsModal from '../components/MovieDetailsModal.vue';
 
 const route = useRoute();
 const keyword = ref('');
 const cast = computed(() => store.state.moviesByCast);
 const lastSearchQueryByCast = computed(() => store.state.lastSearchQueryByCast);
 const isLoadingByCast = computed(() => store.state.isLoadingByCast);
+const selectedMovieId = ref(null); // Reactive property for selected movie ID
 
 function searchMoviesByCast(searchTerm) {
   if (searchTerm) {
     store.dispatch('searchMoviesByCast', searchTerm);
   } else {
-    store.dispatch('resetCastSearchState'); // Resets the search state when input is cleared
+    store.dispatch('resetCastSearchState');
   }
 }
 
 function handleInput(event) {
   if (!event.target.value) {
-    store.dispatch('resetCastSearchState'); // Resets the search state when input is cleared
+    store.dispatch('resetCastSearchState');
   }
 }
 
+function showMovieDetails(movieId) {
+  selectedMovieId.value = movieId;
+}
+
 onMounted(() => {
-  // Initializes search if there's a keyword in the route params
   if (route.params.cast) {
     keyword.value = route.params.cast;
     searchMoviesByCast(keyword.value);
   }
-})
+});
 </script>
+
+<style>
+/* Loader styles */
+.loader {
+  border: 4px solid rgba(255, 255, 255, 0.3); /* Adjust the border color to match your site's theme */
+  border-top: 4px solid #331197; /* Example: using a bright orange for the loader spinner */
+  border-radius: 50%;
+  width: 50px; /* Slightly larger for better visibility */
+  height: 50px;
+  animation: spin 1.5s linear infinite; /* Faster spin for a more dynamic feel */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>

@@ -16,6 +16,9 @@ module.exports = {
         'light-pink': '#fecaca',
       }
     },
+    fontFamily: {
+      shrikhand: ['Shrikhand', 'serif'],
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),
