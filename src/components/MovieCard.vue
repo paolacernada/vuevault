@@ -1,6 +1,6 @@
 <template>
   <div @click="handleCardClick"
-    class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col text-center justify-center items-center p-4 movie-card">
+    class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col text-center justify-center items-center p-2 pt-4 movie-card">
 
     <!-- Movie poster image with dynamic source and alt text -->
     <img :src="getMoviePosterUrl(movie.poster_path)" :alt="movie.title" class="rounded-t-xl w-44 h-60 object-fill" />
