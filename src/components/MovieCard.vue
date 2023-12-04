@@ -32,7 +32,7 @@
 
         <!-- Button to watch trailer -->
         <button @click="event => handleWatchTrailerClick(event, movie.id)"
-          class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none"
+          class="bg-blue-500 text-white px-2 py-2 rounded-lg hover:bg-blue-600 focus:outline-none"
           :class="{ 'bg-gray-400 text-gray-600 cursor-not-allowed hover:bg-gray-400': !movie.trailerAvailable }">
           {{ movie.trailerAvailable ? 'Watch Trailer' : 'Trailer Unavailable' }}
         </button>
