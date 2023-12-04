@@ -59,33 +59,36 @@ const showMovieDetails = (movieId) => {
   selectedMovieId.value = movieId;
 };
 
-onMounted(async () => {
-  await fetchNowPlayingMovies();
-});
-
-watch(selectedDays, async () => {
-  currentPage.value = 1;
-  moviesNowPlaying.value = [];
-  await fetchNowPlayingMovies();
-}, { immediate: true });
-
+// Function to fetch movies
 async function fetchNowPlayingMovies() {
-  isLoading.value = true; // Set loading to true when fetching movies
+  isLoading.value = true;
   try {
     const response = await axiosClient.get("/movie/now_playing", {
       params: { page: currentPage.value }
     });
     const movies = response.data.results;
+    // Process and filter movies based on selected days
     const processedMovies = await processMovies(movies);
-    moviesNowPlaying.value = [...moviesNowPlaying.value, ...processedMovies];
-
+    // Append new movies to the existing list
+    moviesNowPlaying.value = [...new Set([...moviesNowPlaying.value, ...processedMovies])];
     totalPages.value = response.data.total_pages;
   } catch (error) {
     console.error("Error fetching now playing movies:", error);
   } finally {
-    isLoading.value = false; // Set loading to false after fetching is complete
+    isLoading.value = false;
   }
 }
+
+// Watcher for selectedDays
+watch(selectedDays, () => {
+  currentPage.value = 1;
+  moviesNowPlaying.value = [];
+  fetchNowPlayingMovies();
+});
+
+onMounted(() => {
+  fetchNowPlayingMovies();
+});
 
 async function processMovies(movies) {
   const currentYear = new Date().getFullYear();
@@ -95,11 +98,14 @@ async function processMovies(movies) {
     const releaseDate = new Date(movie.release_date);
     const differenceInDays = daysBetweenDates(currentDate, releaseDate);
 
-    if (releaseDate.getFullYear() == currentYear && differenceInDays <= selectedDays.value) {
-      return {
-        ...movie,
-        trailerAvailable: await checkTrailerAvailability(movie.id)
-      };
+    if (releaseDate.getFullYear() === currentYear && differenceInDays <= selectedDays.value) {
+      // Check if the movie already exists in the array to avoid duplicates
+      if (!moviesNowPlaying.value.some(m => m.id === movie.id)) {
+        return {
+          ...movie,
+          trailerAvailable: await checkTrailerAvailability(movie.id)
+        };
+      }
     }
     return null;
   })).then(movies => movies.filter(movie => movie != null));
