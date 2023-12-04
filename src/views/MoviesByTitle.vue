@@ -1,5 +1,5 @@
 <template>
-  <MovieSearchBar @search="searchMovies" placeholder="Search for movies"/>
+  <MovieSearchBar @search="searchMovies" placeholder="Search for movies" />
 
   <!-- Loading Spinner -->
   <div v-if="isLoadingByTitle" class="flex justify-center my-4">
@@ -7,13 +7,9 @@
   </div>
 
   <!-- Grid for displaying movies -->
-  <div v-if="!isLoadingByTitle" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 p-8">
-    <MovieCard 
-      v-for="movie in filteredMovies" 
-      :key="movie.id" 
-      :movie="movie" 
-      @click="handleMovieSelect(movie.id)" 
-    />
+  <div v-if="!isLoadingByTitle"
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 p-8">
+    <MovieCard v-for="movie in filteredMovies" :key="movie.id" :movie="movie" @click="handleMovieSelect(movie.id)" />
   </div>
 
   <!-- Message when no movies found -->
@@ -24,11 +20,7 @@
   </div>
 
   <!-- MovieDetailsModal Component -->
-  <MovieDetailsModal 
-    :movieId="selectedMovieId" 
-    :showModal="selectedMovieId !== null" 
-    @close="selectedMovieId = null"
-  />
+  <MovieDetailsModal :movieId="selectedMovieId" :showModal="selectedMovieId !== null" @close="selectedMovieId = null" />
 </template>
 
 <script setup>
@@ -67,16 +59,21 @@ onMounted(() => {
 <style>
 /* Loader styles */
 .loader {
-  border: 4px solid rgba(255, 255, 255, 0.3); /* Adjust the border color to match your site's theme */
-  border-top: 4px solid #331197; /* Example: using a bright orange for the loader spinner */
-  border-radius: 50%;
-  width: 50px; /* Slightly larger for better visibility */
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #331197;
+  width: 50px;
   height: 50px;
-  animation: spin 1.5s linear infinite; /* Faster spin for a more dynamic feel */
+  animation: spin 1.5s linear infinite;
+  /* Faster spin for a dynamic feel */
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

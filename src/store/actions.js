@@ -82,7 +82,7 @@ export async function searchMoviesByLetter({ commit }, letter) {
 
 export async function searchMoviesByCast({ commit }, cast) {
     commit("setIsLoadingByCast", true);
-    commit("setLastSearchQueryByCast", cast); 
+    commit("setLastSearchQueryByCast", cast);
 
     try {
         commit("setSearchPerformed", true);

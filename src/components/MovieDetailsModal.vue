@@ -1,88 +1,83 @@
 <template>
-    <transition
-    name="popup"
-    enter-active-class="transition-transform transition-opacity duration-700 ease-out"
+  <transition name="popup" enter-active-class="transition-transform transition-opacity duration-700 ease-out"
     leave-active-class="transition-transform transition-opacity duration-700 ease-in"
-    enter-from-class="opacity-0 scale-90 rotate-3"
-    enter-to-class="opacity-100 scale-100 rotate-0"
-    leave-from-class="opacity-100 scale-100 rotate-0"
-    leave-to-class="opacity-0 scale-90 rotate-3"
-  >
-  <div v-if="movieId" class="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center p-4 z-50">
-    <div v-if="isLoading" class="loader"></div> <!-- Show loader when loading -->
-    <div v-else class="relative bg-gray-900 rounded-lg shadow-lg overflow-auto max-h-full p-4 text-white">
-     
-            <!-- Loading Indicator -->
-            <div v-if="isLoading" class="flex justify-center items-center">
-        <div class="loader"></div>
-      </div>
+    enter-from-class="opacity-0 scale-90 rotate-3" enter-to-class="opacity-100 scale-100 rotate-0"
+    leave-from-class="opacity-100 scale-100 rotate-0" leave-to-class="opacity-0 scale-90 rotate-3">
+    <div v-if="movieId" class="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center p-4 z-50">
+      <div v-if="isLoading" class="loader"></div> <!-- Shows loader when loading -->
+      <div v-else class="relative bg-gray-900 rounded-lg shadow-lg overflow-auto max-h-full p-4 text-white">
 
-
-      <!-- Movie Content -->
-      <div v-else>
-        <!-- Close button -->
-        <button @click="closeModal"
-          class="absolute top-4 right-4 bg-gray-700 text-gray-200 hover:bg-gray-600 p-2 rounded-full focus:outline-none">
-          &times;
-        </button>
-
-        <!-- Movie title -->
-        <h1 class="text-4xl md:text-5xl font-bold text-center mb-8">
-          {{ movie.title }}
-        </h1>
-
-      <!-- Container for movie poster and movie details -->
-      <div class="flex flex-col md:flex-row items-center justify-center gap-10">
-        <div>
-          <!-- Movie poster -->
-          <img :src="getMoviePosterUrl(movie.poster_path)" :alt="movie.title"
-            class="rounded-lg shadow-md w-44 h-60 object-cover mx-auto" />
+        <!-- Loading Indicator -->
+        <div v-if="isLoading" class="flex justify-center items-center">
+          <div class="loader"></div>
         </div>
 
-        <!-- Movie details: release date, genres, runtime -->
-        <div class="bg-gray-800 rounded-lg shadow p-4 space-y-4 w-full md:w-2/5">
-          <!-- Release Date -->
-          <div class="text-lg">
-            <strong class="font-semibold">Release Date:</strong><br> {{ formatDate(movie.release_date) }}
+
+        <!-- Movie Content -->
+        <div v-else>
+          <!-- Close button -->
+          <button @click="closeModal"
+            class="absolute top-4 right-4 bg-gray-700 text-gray-200 hover:bg-gray-600 p-2 rounded-full focus:outline-none">
+            &times;
+          </button>
+
+          <!-- Movie title -->
+          <h1 class="text-4xl md:text-5xl font-bold text-center mb-8">
+            {{ movie.title }}
+          </h1>
+
+          <!-- Container for movie poster and movie details -->
+          <div class="flex flex-col md:flex-row items-center justify-center gap-10">
+            <div>
+              <!-- Movie poster -->
+              <img :src="getMoviePosterUrl(movie.poster_path)" :alt="movie.title"
+                class="rounded-lg shadow-md w-44 h-60 object-cover mx-auto" />
+            </div>
+
+            <!-- Movie details: release date, genres, runtime -->
+            <div class="bg-gray-800 rounded-lg shadow p-4 space-y-4 w-full md:w-2/5">
+              <!-- Release Date -->
+              <div class="text-lg">
+                <strong class="font-semibold">Release Date:</strong><br> {{ formatDate(movie.release_date) }}
+              </div>
+
+              <!-- Genres (displayed if available) -->
+              <div class="text-lg">
+                <strong class="font-semibold">Genres:</strong><br>
+                <span v-if="movie.genres && movie.genres.length > 0">
+                  {{ movie.genres.map(genre => genre.name).join(', ') }}
+                </span>
+                <span v-else>No Genre Info Available</span>
+              </div>
+
+              <!-- Runtime -->
+              <div class="text-lg">
+                <strong class="font-semibold">Runtime:</strong><br> {{ formatRuntime(movie.runtime) }}
+              </div>
+            </div>
           </div>
 
-          <!-- Genres (displayed if available) -->
-          <div class="text-lg">
-            <strong class="font-semibold">Genres:</strong><br>
-            <span v-if="movie.genres && movie.genres.length > 0">
-              {{ movie.genres.map(genre => genre.name).join(', ') }}
-            </span>
-            <span v-else>No Genre Info Available</span>
+          <!-- Watch Providers section -->
+          <div class="mb-8">
+            <hr class="my-10 border-gray-700">
+            <h2 class="text-2xl text-center font-semibold mt-8 mb-4">Where to Watch</h2>
+            <div v-if="watchProviders.length > 0" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div v-for="provider in watchProviders" :key="provider.provider_id"
+                class="flex flex-col items-center p-4 bg-gray-800 rounded-lg shadow">
+                <img :src="getImageUrl(provider.logo_path)" :alt="provider.provider_name"
+                  class="w-24 h-24 rounded-md object-contain mb-2">
+                <p class="text-sm">{{ provider.provider_name }}</p>
+              </div>
+            </div>
+            <!-- Message displayed if no watch providers are available -->
+            <div v-else class="text-center">
+              No streaming services available.
+            </div>
           </div>
-
-          <!-- Runtime -->
-          <div class="text-lg">
-            <strong class="font-semibold">Runtime:</strong><br> {{ formatRuntime(movie.runtime) }}
-          </div>
-        </div>
-      </div>
-
-      <!-- Watch Providers section -->
-      <div class="mb-8">
-        <hr class="my-10 border-gray-700">
-        <h2 class="text-2xl text-center font-semibold mt-8 mb-4">Where to Watch</h2>
-        <div v-if="watchProviders.length > 0" class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div v-for="provider in watchProviders" :key="provider.provider_id"
-            class="flex flex-col items-center p-4 bg-gray-800 rounded-lg shadow">
-            <img :src="getImageUrl(provider.logo_path)" :alt="provider.provider_name"
-              class="w-24 h-24 rounded-md object-contain mb-2">
-            <p class="text-sm">{{ provider.provider_name }}</p>
-          </div>
-        </div>
-        <!-- Message displayed if no watch providers are available -->
-        <div v-else class="text-center">
-          No streaming services available.
         </div>
       </div>
     </div>
-  </div>
-  </div>
-</transition>
+  </transition>
 </template>
   
 <script setup>
@@ -96,7 +91,7 @@ const props = defineProps({
 const emit = defineEmits(['close']);
 const movie = ref(null);
 const watchProviders = ref([]);
-const isLoading = ref(false); // Define the loading state
+const isLoading = ref(false);
 
 watch(() => props.movieId, async (newMovieId) => {
   if (newMovieId) {
@@ -119,7 +114,6 @@ const openModal = async (movieId) => {
     isLoading.value = false;
   }
 };
-
 
 const closeModal = () => {
   movie.value = null; // Reset movie data on close
@@ -156,16 +150,19 @@ defineExpose({ openModal, closeModal });
 <style>
 /* Loader styles */
 .loader {
-  border: 4px solid rgba(255, 255, 255, 0.3); /* Adjust the border color to match your site's theme */
-  border-top: 4px solid #331197; /* Example: using a bright orange for the loader spinner */
-  border-radius: 50%;
-  width: 50px; /* Slightly larger for better visibility */
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  width: 50px;
   height: 50px;
-  animation: spin 1.5s linear infinite; /* Faster spin for a more dynamic feel */
+  animation: spin 1.5s linear infinite;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

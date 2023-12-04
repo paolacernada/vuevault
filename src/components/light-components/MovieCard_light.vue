@@ -3,8 +3,7 @@
     <!-- Link to movie details page with dynamic route -->
     <router-link :to="{ name: 'movieDetails', params: { id: movie.id } }">
       <!-- Movie poster image with dynamic source and alt text -->
-      <img :src="getMoviePosterUrl(movie.poster_path)" :alt="movie.title"
-          class="rounded-t-xl w-44 h-60 object-fill" />
+      <img :src="getMoviePosterUrl(movie.poster_path)" :alt="movie.title" class="rounded-t-xl w-44 h-60 object-fill" />
     </router-link>
 
     <!-- Container for movie content -->
@@ -34,8 +33,8 @@
 
         <!-- Button to watch trailer -->
         <button @click="showTrailer"
-                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none"
-                :class="{ 'bg-gray-400 text-gray-600 cursor-not-allowed hover:bg-gray-400': !movie.trailerAvailable }">
+          class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none"
+          :class="{ 'bg-gray-400 text-gray-600 cursor-not-allowed hover:bg-gray-400': !movie.trailerAvailable }">
           {{ movie.trailerAvailable ? 'Watch Trailer' : 'Trailer Unavailable' }}
         </button>
       </div>
@@ -47,7 +46,7 @@
         <h2 class="text-xl font-semibold">Movie Overview</h2>
         <p class="mt-2">{{ selectedMovieOverview }}</p>
         <button @click="closeOverview"
-                class="mt-4 bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring focus:ring-gray-200">
+          class="mt-4 bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring focus:ring-gray-200">
           Close
         </button>
       </div>
@@ -59,7 +58,7 @@
         <h2 class="text-xl font-semibold">Movie Trailer</h2>
         <iframe :src="trailerUrl" class="mt-2 w-full" height="315" frameborder="0" allowfullscreen></iframe>
         <button @click="closeTrailer"
-                class="mt-4 bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring focus:ring-gray-200">
+          class="mt-4 bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring focus:ring-gray-200">
           Close
         </button>
       </div>

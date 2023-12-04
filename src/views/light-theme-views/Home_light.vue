@@ -3,7 +3,7 @@
         <h1 class="text-4xl font-bold">Movies now playing in theatres</h1>
     </div>
 
-     <!-- Right-aligned Dropdown for selecting day range -->
+    <!-- Right-aligned Dropdown for selecting day range -->
     <div class="flex justify-end my-4 pr-8">
         <select v-model="selectedDays" class="rounded dropdown border-blue-500 text-blue-500">
             <option value="7">Last 7 days</option>
@@ -71,7 +71,7 @@ async function fetchNowPlayingMovies() {
         totalPages.value = response.data.total_pages;
     } catch (error) {
         console.error("Error fetching now playing movies:", error);
-    }  finally {
+    } finally {
         isLoading.value = false; // Set loading to false after fetching is complete
     }
 }
@@ -131,13 +131,12 @@ function loadMoreMovies() {
 }
 
 .dropdown {
-    appearance: none; /* Remove default browser dropdown arrow */
-    background-image: url('../assets/down-arrow-svgrepo-com.svg'); /* Path to your custom arrow image */
-    background-repeat: no-repeat;
-    background-position: right 0.5rem center; /* Adjust as needed */
-    background-size: 13%; /* Adjust the size of the arrow to be half of the original */
-    padding-right: 2rem; /* Add padding to prevent text overlap */
-    /* Add other styles like border, padding, etc. as needed */
+    appearance: none;
+    background-image: url('../assets/down-arrow-svgrepo-com.svg');
+    background-position: right 0.5rem center;
+    background-size: 13%;
+    padding-right: 2rem;
+
 }
 
 /* This part ensures the dropdown arrow is visible across browsers */
@@ -146,7 +145,11 @@ function loadMoreMovies() {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-</style>
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}</style>

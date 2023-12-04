@@ -1,7 +1,7 @@
 <template>
   <!-- Main container with a fixed width and centered -->
   <div class="max-w-4xl mx-auto p-4 bg-gray-900 shadow-lg rounded-lg mt-4 mb-4 text-white">
-   
+
     <!-- Button to navigate back to the previous page -->
     <button @click="goBack" class="mb-6 text-lg font-semibold text-blue-400 hover:text-blue-600">
       Back
@@ -17,29 +17,29 @@
       <div>
         <!-- Movie poster -->
         <img :src="getMoviePosterUrl(movie.poster_path)" :alt="movie.title"
-        class="rounded-lg shadow-md w-44 h-60 object-cover mx-auto" />
+          class="rounded-lg shadow-md w-44 h-60 object-cover mx-auto" />
       </div>
 
       <!-- Movie details: release date, genres, runtime -->
       <div class="bg-gray-800 rounded-lg shadow p-4 space-y-4 w-full md:w-2/5">
 
         <!-- Release Date -->
-          <div class="ml-3 text-lg">
-            <strong class="font-semibold">Release Date:</strong><br> {{ formatDate(movie.release_date) }}
+        <div class="ml-3 text-lg">
+          <strong class="font-semibold">Release Date:</strong><br> {{ formatDate(movie.release_date) }}
         </div>
 
-          <!-- Genres (displayed if available) -->
-          <div class="ml-3 text-lg">
-            <strong class="font-semibold">Genres:</strong><br>
+        <!-- Genres (displayed if available) -->
+        <div class="ml-3 text-lg">
+          <strong class="font-semibold">Genres:</strong><br>
           <span v-if="movie.genres && movie.genres.length > 0">
             {{ movie.genres.map(genre => genre.name).join(', ') }}
           </span>
           <span v-else>No Genre Info Available</span>
         </div>
 
-          <!-- Runtime -->
-          <div class="ml-3 text-lg">
-            <strong class="font-semibold">Runtime:</strong><br> {{ formatRuntime(movie.runtime) }}
+        <!-- Runtime -->
+        <div class="ml-3 text-lg">
+          <strong class="font-semibold">Runtime:</strong><br> {{ formatRuntime(movie.runtime) }}
         </div>
       </div>
     </div>
@@ -49,14 +49,14 @@
       <hr class="my-10 border-gray-700">
 
       <h2 class="text-2xl text-center font-semibold mt-8 mb-4">Where to Watch</h2>
-    <div v-if="watchProviders.length > 0" class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div v-for="provider in watchProviders" :key="provider.provider_id"
-           class="flex flex-col items-center p-4 bg-gray-800 rounded-lg shadow">
-        <img :src="getImageUrl(provider.logo_path)" :alt="provider.provider_name"
-             class="w-24 h-24 rounded-md object-contain mb-2">
-        <p class="text-sm">{{ provider.provider_name }}</p>
+      <div v-if="watchProviders.length > 0" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div v-for="provider in watchProviders" :key="provider.provider_id"
+          class="flex flex-col items-center p-4 bg-gray-800 rounded-lg shadow">
+          <img :src="getImageUrl(provider.logo_path)" :alt="provider.provider_name"
+            class="w-24 h-24 rounded-md object-contain mb-2">
+          <p class="text-sm">{{ provider.provider_name }}</p>
+        </div>
       </div>
-    </div>
       <!-- Message displayed if no watch providers are available -->
       <div v-else class="text-center">
         No streaming services available.

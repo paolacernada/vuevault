@@ -40,7 +40,6 @@
     </div>
   </div>
   <MovieDetailsModal :movieId="selectedMovieId" :showModal="selectedMovieId !== null" @close="selectedMovieId = null" />
-
 </template>
 
 <script setup>
@@ -136,27 +135,21 @@ function loadMoreMovies() {
 <style>
 /* Loader styles */
 .loader {
-  border: 4px solid rgba(255, 255, 255, 0.3); /* Adjust the border color to match your site's theme */
-  border-top: 4px solid #331197; /* Example: using a bright orange for the loader spinner */
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #331197;
   border-radius: 50%;
-  width: 50px; /* Slightly larger for better visibility */
+  width: 50px;
   height: 50px;
-  animation: spin 1.5s linear infinite; /* Faster spin for a more dynamic feel */
+  animation: spin 1.5s linear infinite;
 }
 
 .dropdown {
   appearance: none;
-  /* Remove default browser dropdown arrow */
-  background-image: url('../assets/down-arrow-svgrepo-com.svg');
-  /* Path to your custom arrow image */
+  background-image: url('../assets/down-arrow.svg');
   background-repeat: no-repeat;
   background-position: right 0.5rem center;
-  /* Adjust as needed */
   background-size: 13%;
-  /* Adjust the size of the arrow to be half of the original */
   padding-right: 2rem;
-  /* Add padding to prevent text overlap */
-  /* Add other styles like border, padding, etc. as needed */
 }
 
 /* This part ensures the dropdown arrow is visible across browsers */
@@ -165,7 +158,11 @@ function loadMoreMovies() {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-</style>
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}</style>

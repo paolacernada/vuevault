@@ -1,7 +1,7 @@
 <template>
     <header class="bg-gray-800 h-16 flex justify-between items-center px-5 shadow-md">
         <router-link :to="{ name: 'home' }" class="inline-flex items-center h-full">
-            <img src="../assets/VueVault_logo.png" alt="VueVault Logo" class="h-12 mr-2"> <!-- Replace with your logo path if needed -->
+            <img src="../assets/VueVault_logo.png" alt="VueVault Logo" class="h-12 mr-2">
             <span class="text-2xl text-white font-shrikhand">VueVault</span>
         </router-link>
         <nav class="flex items-center gap-4">

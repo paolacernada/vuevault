@@ -1,8 +1,8 @@
 <template>
   <MovieSearchBar @search="searchMoviesByCast" @input="handleInput" placeholder="Search by cast member name" />
 
-    <!-- Loading Spinner -->
-    <div v-if="isLoadingByCast" class="flex justify-center my-4">
+  <!-- Loading Spinner -->
+  <div v-if="isLoadingByCast" class="flex justify-center my-4">
     <div class="loader"></div>
   </div>
 
@@ -33,7 +33,7 @@ const keyword = ref('');
 const cast = computed(() => store.state.moviesByCast);
 const lastSearchQueryByCast = computed(() => store.state.lastSearchQueryByCast);
 const isLoadingByCast = computed(() => store.state.isLoadingByCast);
-const selectedMovieId = ref(null); // Reactive property for selected movie ID
+const selectedMovieId = ref(null);
 
 function searchMoviesByCast(searchTerm) {
   if (searchTerm) {
@@ -64,16 +64,21 @@ onMounted(() => {
 <style>
 /* Loader styles */
 .loader {
-  border: 4px solid rgba(255, 255, 255, 0.3); /* Adjust the border color to match your site's theme */
-  border-top: 4px solid #331197; /* Example: using a bright orange for the loader spinner */
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #331197;
   border-radius: 50%;
-  width: 50px; /* Slightly larger for better visibility */
+  width: 50px;
   height: 50px;
-  animation: spin 1.5s linear infinite; /* Faster spin for a more dynamic feel */
+  animation: spin 1.5s linear infinite;
+  /* Faster spin for a dynamic feel */
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-</style>
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}</style>
