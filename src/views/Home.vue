@@ -51,7 +51,7 @@ import MovieDetailsModal from '../components/MovieDetailsModal.vue';
 const moviesNowPlaying = ref([]);
 const currentPage = ref(1);
 const totalPages = ref(0);
-const selectedDays = ref(30); // default value
+const selectedDays = ref(15); // default value
 const isLoading = ref(false);
 const selectedMovieId = ref(null);
 
