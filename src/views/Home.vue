@@ -66,9 +66,14 @@ async function fetchNowPlayingMovies() {
     const response = await axiosClient.get("/movie/now_playing", {
       params: { page: currentPage.value }
     });
-    const movies = response.data.results;
+    let movies = response.data.results;
+
+    // Filter out NC-17 movies
+    movies = await filterNC17Movies(movies);
+
     // Process and filter movies based on selected days
     const processedMovies = await processMovies(movies);
+
     // Append new movies to the existing list
     moviesNowPlaying.value = [...new Set([...moviesNowPlaying.value, ...processedMovies])];
     totalPages.value = response.data.total_pages;
@@ -134,6 +139,19 @@ function loadMoreMovies() {
     currentPage.value++;
     fetchNowPlayingMovies();
   }
+}
+
+async function filterNC17Movies(movies) {
+  const filteredMovies = [];
+  for (const movie of movies) {
+    const releasesResponse = await axiosClient.get(`movie/${movie.id}/releases`);
+    const releases = releasesResponse.data.countries;
+    const usRelease = releases.find(release => release.iso_3166_1 === 'US');
+    if (usRelease && usRelease.certification !== 'NC-17') {
+      filteredMovies.push(movie);
+    }
+  }
+  return filteredMovies;
 }
 
 </script>
