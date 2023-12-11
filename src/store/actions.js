@@ -1,10 +1,13 @@
 import axiosClient from "../axiosClient";
 
-// Helper function to check trailer availability
+// Helper function to check if a movie has a trailer available
 async function checkTrailerAvailability(movie) {
     try {
+        // Requesting video data for the movie
         const response = await axiosClient.get(`/movie/${movie.id}/videos`);
         const videos = response.data.results;
+
+        // Checking for the presence of a trailer on YouTube
         const trailerVideo = videos.find((video) => video.type === 'Trailer' && video.site === 'YouTube');
         movie.trailerAvailable = !!trailerVideo;
     } catch (error) {
@@ -13,73 +16,74 @@ async function checkTrailerAvailability(movie) {
     }
 }
 
+// Action to search movies based on a keyword
 export async function searchMovies({ commit }, keyword) {
-    commit('setIsLoadingByTitle', true);  // Start loading
-    commit('setLastSearchQueryByTitle', keyword);
+    commit('setIsLoadingByTitle', true);  // Indicating the start of loading
+    commit('setLastSearchQueryByTitle', keyword); // Storing the last search query
 
     try {
+        // Fetching movies matching the search query
         const response = await axiosClient.get(`search/movie?query=${keyword}`);
         let movies = response.data.results;
 
-        // Fetches releases for each movie and filter out 'NC-17' rated movies
+        // Fetch releases for each movie and filtering out movies with 'NC-17' rating in the US
         const filteredMovies = [];
         for (const movie of movies) {
             const releasesResponse = await axiosClient.get(`movie/${movie.id}/releases`);
             const releases = releasesResponse.data.countries;
-
-            // Finds US certification
             const usRelease = releases.find(release => release.iso_3166_1 === 'US');
             if (usRelease && usRelease.certification !== 'NC-17') {
                 filteredMovies.push(movie);
             }
         }
 
-        // Initializes trailer availability for each movie
+        // Checking trailer availability for each movie
         const trailerChecks = filteredMovies.map((movie) => checkTrailerAvailability(movie));
         await Promise.all(trailerChecks);
 
-        commit("setSearchedMovies", filteredMovies);
+        commit("setSearchedMovies", filteredMovies); // Storing the filtered movies
     } catch (error) {
         console.error('Error searching movies:', error);
     } finally {
-        commit('setIsLoadingByTitle', false);  // End loading
+        commit('setIsLoadingByTitle', false);  // Indicating the end of loading
     }
 }
 
+// Action to search movies by the first letter of their title
 export async function searchMoviesByLetter({ commit }, letter) {
     try {
+        // Fetching movies that start with the specified letter
         const response = await axiosClient.get(`search/movie?query=${letter}`);
         let movies = response.data.results;
 
-        // Filters movies starting with the selected letter
+        // Filtering movies by the specified starting letter
         movies = movies.filter(movie => movie.title && movie.title.startsWith(letter));
 
-        // Fetches releases for each movie and filter out 'NC-17' rated movies
+        // Fetch releases for each movie and filtering out movies with 'NC-17' rating in the US
         const filteredMovies = [];
         for (const movie of movies) {
             const releasesResponse = await axiosClient.get(`movie/${movie.id}/releases`);
             const releases = releasesResponse.data.countries;
-
-            // Finds US certification
             const usRelease = releases.find(release => release.iso_3166_1 === 'US');
             if (usRelease && usRelease.certification !== 'NC-17') {
                 filteredMovies.push(movie);
             }
         }
 
-        // Initializes trailer availability for each movie
+        // Checking trailer availability for each movie
         const trailerChecks = filteredMovies.map(movie => checkTrailerAvailability(movie));
         await Promise.all(trailerChecks);
 
-        // Sorts movies alphabetically by title
+        // Sort movies alphabetically by title
         filteredMovies.sort((a, b) => a.title.localeCompare(b.title));
 
-        commit("setMoviesByLetter", filteredMovies);
+        commit("setMoviesByLetter", filteredMovies); // Storing the filtered movies
     } catch (error) {
         console.error('Error searching movies by letter:', error);
     }
 }
 
+// Action to search movies based on a cast member's name
 export async function searchMoviesByCast({ commit }, cast) {
     commit("setIsLoadingByCast", true);
     commit("setLastSearchQueryByCast", cast);
@@ -93,29 +97,27 @@ export async function searchMoviesByCast({ commit }, cast) {
         // Converts query to lowercase for case-insensitive comparison
         const normalizedQuery = cast.toLowerCase();
 
-        // Filters persons whose name matches the query and get their known_for movies
+        // Filter persons whose name matches the query and get their known_for movies
         let movies = persons
             .filter(person => person.name.toLowerCase().includes(normalizedQuery))
             .flatMap(person => person.known_for.filter(item => item.media_type === 'movie'));
 
-        // Fetches releases for each movie and filter out 'NC-17' rated movies
+        // Fetch releases for each movie and filtering out movies with 'NC-17' rating in the US
         const filteredMovies = [];
         for (const movie of movies) {
             const releasesResponse = await axiosClient.get(`movie/${movie.id}/releases`);
             const releases = releasesResponse.data.countries;
-
-            // Finds US certification
             const usRelease = releases.find(release => release.iso_3166_1 === 'US');
             if (usRelease && usRelease.certification !== 'NC-17') {
                 filteredMovies.push(movie);
             }
         }
 
-        // Initializes trailer availability for each movie
+        // Checking trailer availability for each movie
         const trailerChecks = filteredMovies.map(movie => checkTrailerAvailability(movie));
         await Promise.all(trailerChecks);
 
-        commit("setMoviesByCast", filteredMovies);
+        commit("setMoviesByCast", filteredMovies); // Storing the filtered movies
     } catch (error) {
         console.error('Error searching movies by cast:', error);
     } finally {
@@ -123,14 +125,16 @@ export async function searchMoviesByCast({ commit }, cast) {
     }
 }
 
+// Action to reset the search state for cast-based searches
 export async function resetCastSearchState({ commit }) {
-    commit('setMoviesByCast', []); // Clears the moviesByCast state
-    commit('setLastSearchQueryByCast', ''); // Resets the last search query for cast
-    commit('setIsLoadingByCast', false); // Ensures loading state is reset
+    commit('setMoviesByCast', []); // Clears the movies list
+    commit('setLastSearchQueryByCast', ''); // Resets the last search query
+    commit('setIsLoadingByCast', false); // Resets loading state
 }
 
+// Action to reset the search state for title-based searches
 export async function resetTitleSearchState({ commit }) {
-    commit('setSearchedMovies', []);
-    commit('setLastSearchQueryByTitle', '');
-    commit('setIsLoadingByTitle', false);
+    commit('setSearchedMovies', []); // Clears the movies list
+    commit('setLastSearchQueryByTitle', ''); // Resets the last search query
+    commit('setIsLoadingByTitle', false); // Resets loading state
 }

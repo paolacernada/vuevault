@@ -1,10 +1,12 @@
 <template>
+  <!-- Main container for the home page -->
   <div class="bg-gray-900 text-white min-h-screen">
+    <!-- Page title -->
     <div class="pt-8 pb-4 px-5">
       <h1 class="text-white flex justify-center text-4xl font-bold">Movies now playing in theatres</h1>
     </div>
 
-    <!-- Right-aligned Dropdown for selecting day range -->
+    <!-- Dropdown for selecting the range of days for movies -->
     <div class="flex justify-end pr-8">
       <select v-model="selectedDays" class="rounded-lg dropdown bg-gray-800 border-gray-700 text-white">
         <option value="7">Last 7 days</option>
@@ -13,53 +15,59 @@
       </select>
     </div>
 
-    <!-- Loading Spinner -->
+    <!-- Loading indicator -->
     <div v-if="isLoading" class="flex justify-center my-4">
       <div class="loader"></div>
     </div>
 
-    <!-- No Movies Available Message -->
+    <!-- Message displayed when no movies are available -->
     <div v-if="!isLoading && moviesNowPlaying.length === 0" class="flex justify-center my-4">
       <span>No movies currently playing in theaters.</span>
     </div>
 
-    <!-- Display Movies -->
+    <!-- Container for displaying movie cards -->
     <div class="container mx-auto px-5 py-8">
-
+      <!-- Grid layout for movie cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+        <!-- Movie cards for each movie -->
         <MovieCard v-for="movie in moviesNowPlaying" :key="movie.id" :movie="movie" @click="showMovieDetails" />
       </div>
     </div>
 
+    <!-- Button to load more movies -->
     <div class="flex justify-center mt-6">
-      <!-- Load More Button -->
       <button v-if="totalPages > currentPage" @click="loadMoreMovies"
         class="w-1/4 px-4 py-2 bg-blue-500 text-white rounded-lg focus:outline-none hover:bg-blue-600 transition-all">
         Load More
       </button>
     </div>
   </div>
+
+  <!-- Modal for displaying movie details -->
   <MovieDetailsModal :movieId="selectedMovieId" :showModal="selectedMovieId !== null" @close="selectedMovieId = null" />
 </template>
 
 <script setup>
+// Script setup for Home.vue component
 import { ref, onMounted, watch } from 'vue';
 import axiosClient from "../axiosClient.js";
 import MovieCard from '../components/MovieCard.vue';
 import MovieDetailsModal from '../components/MovieDetailsModal.vue';
 
+// Reactive state variables
 const moviesNowPlaying = ref([]);
 const currentPage = ref(1);
 const totalPages = ref(0);
-const selectedDays = ref(15); // default value
+const selectedDays = ref(15); // Default value for days selection
 const isLoading = ref(false);
 const selectedMovieId = ref(null);
 
+// Function to show movie details modal
 const showMovieDetails = (movieId) => {
   selectedMovieId.value = movieId;
 };
 
-// Function to fetch movies
+// Function to fetch currently playing movies
 async function fetchNowPlayingMovies() {
   isLoading.value = true;
   try {
@@ -84,13 +92,14 @@ async function fetchNowPlayingMovies() {
   }
 }
 
-// Watcher for selectedDays
+// Watcher for changes in selectedDays
 watch(selectedDays, () => {
   currentPage.value = 1;
   moviesNowPlaying.value = [];
   fetchNowPlayingMovies();
 });
 
+// On component mount, fetch movies
 onMounted(() => {
   fetchNowPlayingMovies();
 });
@@ -120,7 +129,6 @@ function daysBetweenDates(date1, date2) {
   const oneDay = 24 * 60 * 60 * 1000;
   return Math.round(Math.abs((date2 - date1) / oneDay));
 }
-
 
 async function checkTrailerAvailability(movieId) {
   try {
@@ -157,7 +165,7 @@ async function filterNC17Movies(movies) {
 </script>
 
 <style>
-/* Loader styles */
+/* Loader animation styles */
 .loader {
   border: 4px solid rgba(255, 255, 255, 0.3);
   border-top: 4px solid #331197;
@@ -167,6 +175,7 @@ async function filterNC17Movies(movies) {
   animation: spin 1.5s linear infinite;
 }
 
+/* Dropdown styling, including custom arrow image */
 .dropdown {
   appearance: none;
   background-image: url('../assets/down-arrow.svg');
@@ -182,6 +191,8 @@ async function filterNC17Movies(movies) {
 }
 
 @keyframes spin {
+
+  /* Keyframes for the loader spin animation */
   0% {
     transform: rotate(0deg);
   }
@@ -189,4 +200,5 @@ async function filterNC17Movies(movies) {
   100% {
     transform: rotate(360deg);
   }
-}</style>
+}
+</style>
