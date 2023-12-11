@@ -59,7 +59,7 @@ watch(selectedDays, async () => {
 }, { immediate: true });
 
 async function fetchNowPlayingMovies() {
-    isLoading.value = true; // Set loading to true when fetching movies
+    isLoading.value = true; // Sets loading to true when fetching movies
     try {
         const response = await axiosClient.get("/movie/now_playing", {
             params: { page: currentPage.value }
@@ -72,7 +72,7 @@ async function fetchNowPlayingMovies() {
     } catch (error) {
         console.error("Error fetching now playing movies:", error);
     } finally {
-        isLoading.value = false; // Set loading to false after fetching is complete
+        isLoading.value = false; // Sets loading to false after fetching is complete
     }
 }
 
@@ -152,4 +152,5 @@ function loadMoreMovies() {
     100% {
         transform: rotate(360deg);
     }
-}</style>
+}
+</style>
