@@ -18,15 +18,15 @@
     <nav class="hidden md:flex items-center gap-4">
       <!-- Navigation links for the various pages -->
       <router-link :to="{ name: 'byTitle' }"
-        class="text-sm font-medium text-gray-300 rounded-md hover:bg-blue-600 hover:text-white transition-colors">
+        class="text-sm px-1 font-medium text-gray-300 rounded-md hover:bg-blue-600 hover:text-white transition-colors">
         Search Movies
       </router-link>
       <router-link :to="{ name: 'byLetter' }"
-        class="text-sm font-medium text-gray-300 rounded-md hover:bg-blue-600 hover:text-white transition-colors">
+        class="text-sm px-1 font-medium text-gray-300 rounded-md hover:bg-blue-600 hover:text-white transition-colors">
         Featured Movies
       </router-link>
       <router-link :to="{ name: 'byCast' }"
-        class="text-sm font-medium text-gray-300 rounded-md hover:bg-blue-600 hover:text-white transition-colors">
+        class="text-sm px-1 font-medium text-gray-300 rounded-md hover:bg-blue-600 hover:text-white transition-colors">
         Movies By Cast
       </router-link>
     </nav>
