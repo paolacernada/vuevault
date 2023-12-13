@@ -91,4 +91,4 @@ If Tailwind CSS is playing hide and seek (missing `tailwind.config.js`):
 
 ### Step 6: Spill the Secrets (Environment Variables)
 
-Create or edit a `.env` file in the project root. Add `VITE_API_BASE_URL` and any other
+Create or edit a `.env` file in the project root. Add `VITE_API_BASE_URL` and any other.
