@@ -1,6 +1,6 @@
-# VueVault: Your Personal Movie Universe 🌟
+# VueVault: Your Personal Movie Universe 🎥
 
-Welcome to VueVault, where movies come alive right at your fingertips! Imagine a world where discovering your next favorite film is just a click away. That's VueVault for you - a delightful blend of technology and movie magic 🎥.
+Welcome to VueVault, where movies come alive right at your fingertips! Imagine a world where discovering your next favorite film is just a click away. That's VueVault for you - a delightful blend of technology and movie magic🌟.
 
 Powered by Vue.js and Tailwind CSS, this dynamic web application makes discovering movies a breeze.
 
