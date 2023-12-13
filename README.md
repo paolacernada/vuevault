@@ -22,7 +22,7 @@ Each piece of our tech stack was picked not just for its LL Cool J's cool factor
 
 Ready for a sneak peek into the VueVault universe? Click the image below and be transported to a cinematic showcase of VueVault's features. It's not just a demo; it's an experience!
 
-[![VueVault Demo](../vuevault/src/assets/vuevault-thumbnail.png)](https://youtu.be/RmGX42v0YLk)
+[![VueVault Demo](vuevault/src/assets/vuevault-thumbnail.png)](https://youtu.be/RmGX42v0YLk)
 
 ## Epic Adventures & Victories 🚀
 
