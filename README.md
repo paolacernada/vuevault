@@ -4,6 +4,11 @@ Welcome to VueVault, where movies come alive right at your fingertips! Imagine a
 
 Powered by Vue.js and Tailwind CSS, this dynamic web application makes discovering movies a breeze.
 
+#### Created by:
+
+- [Luis Sosa](https://github.com/luisJsosa/)
+- [Paola Cernada](https://github.com/paolacernada/) 
+
 ## Behind the Scenes: The Tech Ensemble
 
 VueVault isn't just built; it's crafted with passion, using the coolest tech in the block:
